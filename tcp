@@ -1,0 +1,111 @@
+{
+  "log": {
+    "loglevel": "info",
+    "access": "/var/log/xray/access.log",
+    "error": "/var/log/xray/error.log"
+  },
+  "api": {
+    "tag": "api",
+    "services": [
+      "HandlerService",
+      "LoggerService",
+      "StatsService"
+    ]
+  },
+  "stats": {},
+  "policy": {
+    "levels": {
+      "0": {
+        "statsUserUplink": true,
+        "statsUserDownlink": true
+      }
+    },
+    "system": {
+      "statsInboundUplink": true,
+      "statsInboundDownlink": true,
+      "statsOutboundUplink": true,
+      "statsOutboundDownlink": true
+    }
+  },
+  "dns": {
+    "servers": [
+      "https+local://cloudflare-dns.com/dns-query",
+      "1.1.1.1",
+      "1.0.0.1",
+      "8.8.8.8",
+      "8.8.4.4",
+      "localhost"
+    ]
+  },
+  "inbounds": [
+    {
+      "listen": "0.0.0.0",
+      "port": 443,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "你的UUID",
+            "flow": "xtls-rprx-vision"
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "reality",
+        "realitySettings": {
+          "show": true,
+          "dest": "speed.cloudflare.com:443
+          "xver": 0,
+          "maxTimeDiff": 0,
+          "minClientVer": "",
+          "serverNames": [
+            "www.cloudflare.com",
+            "speed.cloudflare.com"
+          ],
+          "privateKey": "-IxYw--tkAMfAQTZjzWKci4P025SRTDvFLJOA6ko-G8",
+          "shortIds": [
+            "11
+          ]
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls"
+        ]
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "tag": "direct"
+    },
+    {
+      "protocol": "blackhole",
+      "tag": "blocked"
+    }
+  ],
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",
+    "rules": [
+      {
+        "inboundTag": [
+          "api"
+        ],
+        "outboundTag": "api",
+        "type": "field"
+      },
+      {
+        "protocol": [
+          "bittorrent"
+        ],
+        "type": "field",
+        "outboundTag": "blocked"
+      }
+    ]
+  }
+}
