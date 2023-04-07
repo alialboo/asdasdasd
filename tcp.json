@@ -45,7 +45,7 @@
       "settings": {
         "clients": [
           {
-            "id": "你的UUID",
+            "id": "b8fb52bb-2641-4b38-9b0a-950fd34535e6",
             "flow": "xtls-rprx-vision"
           }
         ],
